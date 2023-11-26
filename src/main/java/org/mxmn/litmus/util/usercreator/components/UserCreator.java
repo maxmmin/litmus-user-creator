@@ -2,7 +2,7 @@ package org.mxmn.litmus.util.usercreator.components;
 
 import lombok.RequiredArgsConstructor;
 import org.mxmn.litmus.model.authentication.Role;
-import org.mxmn.litmus.model.entity.User;
+import org.mxmn.litmus.model.entity.user.User;
 import org.mxmn.litmus.repository.human.user.UserRepo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +20,9 @@ public class UserCreator implements CommandLineRunner {
     @Value("${password:#{null}}")
     private String password;
 
+    @Value("${role:#{null}}")
+    private String role;
+
     @Value("${firstName:#{'admin'}}")
     private String firstName;
 
@@ -35,7 +38,7 @@ public class UserCreator implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        User admin = createAdmin();
+        User admin = createUser();
         System.out.printf("""
                         \n# # # USER WAS SUCCESSFULLY CREATED # # #
                         email: %s
@@ -50,36 +53,43 @@ public class UserCreator implements CommandLineRunner {
         return value == null || value.trim().isEmpty();
     }
 
-    private User createAdmin () {
-        User admin = new User();
+    private User createUser() {
+        User user = new User();
 
-        admin.setRole(Role.ADMIN);
+        Role parsedRole;
+        if (isEmpty(role)) throw new RuntimeException("empty role");
+        try {
+            parsedRole = Role.valueOf(role);
+        } catch (IllegalArgumentException exception) {
+            throw new RuntimeException("invalid role");
+        }
+
+        user.setRole(parsedRole);
 
         if (!isEmpty(firstName)) {
-            admin.setFirstName(firstName);
+            user.setFirstName(firstName);
         }
 
         if (!isEmpty(middleName)) {
-            admin.setMiddleName(middleName);
+            user.setMiddleName(middleName);
         }
 
         if (!isEmpty(lastName)) {
-            admin.setLastName(lastName);
+            user.setLastName(lastName);
         }
 
         if (!isEmpty(email)) {
-            admin.setEmail(email);
+            user.setEmail(email);
         } else throw new RuntimeException("email should not be empty");
 
         if (!isEmpty(password)) {
-            admin.setPassword(passwordEncoder.encode(password));
+            user.setPassword(passwordEncoder.encode(password));
         } else throw new RuntimeException("password should not be empty");
 
-        admin.setFirstName(firstName);
-        admin.setMiddleName(middleName);
-        admin.setLastName(lastName);
-        admin.setRole(Role.ADMIN);
+        user.setFirstName(firstName);
+        user.setMiddleName(middleName);
+        user.setLastName(lastName);
 
-        return userRepo.create(admin);
+        return userRepo.create(user);
     }
 }
