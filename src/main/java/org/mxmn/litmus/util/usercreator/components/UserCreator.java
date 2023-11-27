@@ -3,7 +3,7 @@ package org.mxmn.litmus.util.usercreator.components;
 import lombok.RequiredArgsConstructor;
 import org.mxmn.litmus.model.authentication.Role;
 import org.mxmn.litmus.model.entity.user.User;
-import org.mxmn.litmus.repository.human.user.UserRepo;
+import org.mxmn.litmus.repository.user.UserRepo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

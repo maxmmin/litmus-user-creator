@@ -1,7 +1,8 @@
 package org.mxmn.litmus.util.usercreator.config;
 
-import org.mxmn.litmus.repository.human.user.UserRepo;
-import org.mxmn.litmus.repository.human.user.UserRepoImpl;
+
+import org.mxmn.litmus.repository.user.UserRepo;
+import org.mxmn.litmus.repository.user.UserRepoImpl;
 import org.mxmn.litmus.security.LitmusSecurityAuditorAware;
 import org.mxmn.litmus.security.LitmusSecurityAuditorAwareImpl;
 import org.mxmn.litmus.util.audit.users.BasicUserAuditUtil;
