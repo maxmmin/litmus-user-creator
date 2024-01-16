@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 })
 public class LitmusUserCreatorConfig {
 
-    @Value("${strength:#{'12'}}")
+    @Value("${strength:#{12}}")
     private String encoderStrength;
 
     @Bean
